@@ -13,6 +13,13 @@ project.lock.json
 *.sln.docstates
 *.json
 
+# Appsettings
+**/appsettings.json
+
+#idea
+.idea/
+*.sln.iml
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

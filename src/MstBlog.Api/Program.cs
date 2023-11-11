@@ -67,6 +67,9 @@ builder.Services.AddAuthentication(options =>
 //Identity Implemantation
 builder.Services.AddIdentity();
 
+//cors implementasyonu 
+builder.Services.UseCors();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -75,6 +78,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("MyAllowedOrigins");
 
 app.UseHttpsRedirection();
 
