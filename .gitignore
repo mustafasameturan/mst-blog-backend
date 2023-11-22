@@ -18,6 +18,7 @@ project.lock.json
 
 #idea
 .idea/
+.vs/
 *.sln.iml
 
 # Build results
