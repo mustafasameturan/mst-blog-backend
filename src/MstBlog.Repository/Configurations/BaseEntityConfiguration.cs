@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MstBlog.Core.Entities;
+using MstBlog.Core.Enums;
 
 namespace MstBlog.Repository.Configurations;
 
@@ -18,6 +19,7 @@ public abstract class BaseEntityConfiguration<TEntity, TId> : IEntityTypeConfigu
         builder.Property(p => p.UpdatedDate)
             .HasDefaultValue(DateTime.UtcNow);
 
-        builder.Property(p => p.Status);
+        builder.Property(p => p.Status)
+            .HasDefaultValue(StatusType.Active);
     }
 }

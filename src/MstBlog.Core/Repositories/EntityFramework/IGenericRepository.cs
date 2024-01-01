@@ -33,5 +33,5 @@ public interface IGenericRepository<T> where T : class
     //Remove entities
     void RemoveRange(IEnumerable<T> entities);
     
-    Task<int> CountAsync(Expression<Func<T, bool>> query);
+    Task<int> CountAsync();
 }

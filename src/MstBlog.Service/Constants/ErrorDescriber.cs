@@ -11,7 +11,7 @@ public class ErrorDescriber : IdentityErrorDescriber
 
     public override IdentityError DuplicateEmail(string email)
     {
-        return new() { Code = "DuplicateEmail", Description = Messages.DUPLICATE_EMAİL };
+        return new() { Code = "DuplicateEmail", Description = Messages.DUPLICATE_EMAIL };
     }
 
     public override IdentityError PasswordTooShort(int length)

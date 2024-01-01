@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MstBlog.Core.Models.Filter;
 using MstBlog.Core.Models.Post;
 using MstBlog.Core.Services;
 
@@ -15,10 +16,16 @@ public class PostsController : BaseController
         _postService = postService;
     }
     
-    [HttpGet("getAllPosts")]
-    public async Task<IActionResult> GetAllProjects()
+    [HttpPost("getAllPosts")]
+    public async Task<IActionResult> GetAllPosts([FromBody]FilterRequestModel requestModel)
     {
-        return CreateActionResult(await _postService.GetAllAsync());
+        return CreateActionResult(await _postService.GetAllAsync(requestModel));
+    }
+    
+    [HttpGet("getTopPosts/{count:int}")]
+    public async Task<IActionResult> GetTopPosts(int count)
+    {
+        return CreateActionResult(await _postService.GetTopPostsAsync(count));
     }
     
     [HttpGet("getAllPostsWithDapper")]
@@ -31,5 +38,17 @@ public class PostsController : BaseController
     public async Task<IActionResult> AddProject(AddPostModel addProjectModel)
     {
         return CreateActionResult(await _postService.AddAsync(addProjectModel));
+    }
+    
+    [HttpGet("getPostCategoryTypes")]
+    public IActionResult GetPostCategoryTypes()
+    {
+        return CreateActionResult(_postService.GetPostCategoryTypes());
+    }
+    
+    [HttpGet("getPostContentTypes")]
+    public IActionResult GetPostContentTypes()
+    {
+        return CreateActionResult(_postService.GetPostContentTypes());
     }
 }

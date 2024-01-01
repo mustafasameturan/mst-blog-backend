@@ -1,3 +1,4 @@
+using MstBlog.Core.Models.Common;
 using MstBlog.Core.Models.Subscribe;
 using MstBlog.Core.Responses;
 
@@ -7,5 +8,5 @@ public interface ISubscribeService
 {
     Task<Response<IEnumerable<ListSubscribeModel>>> GetAllAsync();
     
-    Task<Response<AddSubsribeModel>> AddAsync(AddSubsribeModel addSubsribeModel);
+    Task<Response<NoDataModel>> AddAsync(AddSubsribeModel addSubsribeModel);
 }

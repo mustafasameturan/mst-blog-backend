@@ -48,7 +48,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     }
     
     public IQueryable<T> Queryable() => _dbSet.AsQueryable();
-
+    
     /// <summary>
     /// This method is used to check if entity exists by expression
     /// </summary>
@@ -116,7 +116,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     /// <summary>
     /// This method is used to determine count of data.
     /// </summary>
-    /// <param name="query"></param>
     /// <returns></returns>
-    public async Task<int> CountAsync(Expression<Func<T, bool>> query) => await _dbSet.CountAsync(query);
+    public async Task<int> CountAsync() => await _dbSet.CountAsync();
 }

@@ -5,7 +5,7 @@ namespace MstBlog.Core.Enums;
 
 public enum ContentType
 {
-    [Display(Name="Başlık")]
+    [Display(Name="Baslik")]
     Header=1,
     [Display(Name="Paragraf")]
     Paragraph=2,
@@ -13,6 +13,6 @@ public enum ContentType
     Blockquote=3,
     [Display(Name="Kart")]
     Card=4,
-    [Display(Name="Kod Bloğu")]
+    [Display(Name="Kod")]
     Code=5
 }

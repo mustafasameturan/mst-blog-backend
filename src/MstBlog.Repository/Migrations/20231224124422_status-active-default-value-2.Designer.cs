@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MstBlog.Repository.Contexts;
 
@@ -11,9 +12,10 @@ using MstBlog.Repository.Contexts;
 namespace MstBlog.Repository.Migrations
 {
     [DbContext(typeof(MstBlogDbContext))]
-    partial class MstBlogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231224124422_status-active-default-value-2")]
+    partial class statusactivedefaultvalue2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
