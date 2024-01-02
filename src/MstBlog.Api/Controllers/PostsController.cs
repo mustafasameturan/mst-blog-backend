@@ -23,9 +23,15 @@ public class PostsController : BaseController
     }
     
     [HttpGet("getTopPosts/{count:int}")]
-    public async Task<IActionResult> GetTopPosts(int count)
+    public async Task<IActionResult> GetTopPosts([FromRoute] int count)
     {
         return CreateActionResult(await _postService.GetTopPostsAsync(count));
+    }
+
+    [HttpGet("getPostById/{postId:guid}")]
+    public async Task<IActionResult> GetPostById([FromRoute] Guid postId)
+    {
+        return CreateActionResult(await _postService.GetPostByIdAsync(postId));
     }
     
     [HttpGet("getAllPostsWithDapper")]

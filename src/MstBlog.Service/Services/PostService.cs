@@ -11,6 +11,7 @@ using MstBlog.Core.Repositories;
 using MstBlog.Core.Responses;
 using MstBlog.Core.Services;
 using MstBlog.Core.UnitOfWork;
+using MstBlog.Service.Constants;
 
 namespace MstBlog.Service.Services;
 
@@ -113,9 +114,26 @@ public class PostService : IPostService
         return Response<AddPostModel>.Success(200);
     }
 
-    public Task<Response<GetPostByIdModel>> GetPostByIdAsync(Guid postId)
+    /// <summary>
+    /// This method get posts by id.
+    /// </summary>
+    /// <param name="postId"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public async Task<Response<GetPostByIdModel>> GetPostByIdAsync(Guid postId)
     {
-        throw new NotImplementedException();
+        var postDetail = await _postRepository
+            .Queryable()
+            .Include(p => p.User)
+            .Include(p => p.PostCategories)
+            .Include(p => p.PostContents)
+            .Where(p => p.Id.Equals(postId))
+            .FirstOrDefaultAsync();
+
+        if (postDetail is null)
+            throw new Exception(Messages.POST_NOT_FOUND);
+
+        return Response<GetPostByIdModel>.Success(_mapper.Map<GetPostByIdModel>(postDetail), 200);
     }
 
     /// <summary>

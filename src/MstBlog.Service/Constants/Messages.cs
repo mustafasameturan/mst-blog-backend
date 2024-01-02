@@ -27,4 +27,7 @@ public class Messages
 
     // Subscribe Errors
     public static string SUBSCRIBE_EXIST = "Email is already registered!";
+    
+    // Post Errors
+    public static string POST_NOT_FOUND = "Post not found!";
 }
