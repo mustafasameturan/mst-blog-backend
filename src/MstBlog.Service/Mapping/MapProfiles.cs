@@ -34,14 +34,20 @@ public class MapProfiles : Profile
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => new List<ListPostModel> { src }))
             .ForMember(dest => dest.RecordsTotal, opt => opt.MapFrom(src => 1))
             .ForMember(dest => dest.RecordsFiltered, opt => opt.MapFrom(src => 1));
-
+        
         CreateMap<Post, GetPostByIdModel>()
-            .ForMember(dest => dest.UserInformations.UserId, opt
-                => opt.MapFrom(src => src.User.Id))
-            .ForMember(dest => dest.UserInformations.FullName, opt
-                => opt.MapFrom(src => src.User.FullName));
-
+            .ForMember(dest => dest.UserInformations, opt => opt.MapFrom(src => new GetUserInformationsModel
+            {
+                UserId = src.UserId,
+                FullName = src.User.FullName
+            }))
+            .ForMember(dest => dest.PostCategories, opt => opt.MapFrom(src => src.PostCategories))
+            .ForMember(dest => dest.PostContents, opt => opt.MapFrom(src => src.PostContents));
+        
         CreateMap<PostContent, GetPostContentModel>().ReverseMap();
+        
+        CreateMap<PostCategory, string>()
+            .ConvertUsing(src => EnumHelper.GetDisplayName(src.CategoryType));
         
         CreateMap<Post, AddPostModel>().ReverseMap();
         
