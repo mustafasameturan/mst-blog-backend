@@ -1,6 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using MstBlog.Core.Entities;
+using MstBlog.Core.Enums;
+using MstBlog.Core.Models.Common;
+using MstBlog.Core.Models.Filter;
 using MstBlog.Core.Models.Post;
 using MstBlog.Core.Models.Project;
 using MstBlog.Core.Repositories;
@@ -27,11 +31,45 @@ public class PostService : IPostService
     /// This method gets all posts
     /// </summary>
     /// <returns></returns>
-    public async Task<Response<IEnumerable<ListPostModel>>> GetAllAsync()
+    public async Task<Response<ListPostFilterModel>> GetAllAsync(FilterRequestModel requestModel)
     {
-        List<Post> posts = await _postRepository.GetAll().ToListAsync();
+        List<Post> posts = await _postRepository
+            .GetAll()
+            .Include(p => p.User)
+            .Include(p => p.PostCategories)
+            .Skip(requestModel.Start)
+            .Take(requestModel.Limit)
+            .ToListAsync();
 
-        return Response<IEnumerable<ListPostModel>>.Success(_mapper.Map<IEnumerable<ListPostModel>>(posts), 200);
+        int totalRecordsCount = await _postRepository.CountAsync();
+        
+        int filteredRecordsCount = posts.Count();
+
+        var responseModel = new ListPostFilterModel(
+            _mapper.Map<List<ListPostModel>>(posts),
+            totalRecordsCount,
+            filteredRecordsCount
+        );
+
+        return Response<ListPostFilterModel>.Success(responseModel, 200);
+    }
+
+    /// <summary>
+    /// This method gets top (*) posts
+    /// </summary>
+    /// <param name="count"></param>
+    /// <returns></returns>
+    public async Task<Response<IEnumerable<ListPostModel>>> GetTopPostsAsync(int count)
+    {
+        List<Post> topPosts = await _postRepository
+            .Queryable()
+            .Include(p => p.User)
+            .Include(p => p.PostCategories)
+            .OrderByDescending(t => t.CreatedDate)
+            .Take(count)
+            .ToListAsync();
+        
+        return Response<IEnumerable<ListPostModel>>.Success(_mapper.Map<IEnumerable<ListPostModel>>(topPosts), 200);
     }
 
     /// <summary>
@@ -72,6 +110,56 @@ public class PostService : IPostService
         await _postRepository.AddAsync(newPost);
         await _unitOfWork.CommitAsync();
         
-        return Response<AddPostModel>.Success(204);
+        return Response<AddPostModel>.Success(200);
+    }
+
+    public Task<Response<GetPostByIdModel>> GetPostByIdAsync(Guid postId)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// This method list post content types
+    /// </summary>
+    /// <returns></returns>
+    public Response<IEnumerable<SelectListModel>> GetPostContentTypes()
+    {
+        var contentTypes = Enum.GetValues(typeof(ContentType))
+            .Cast<ContentType>()
+            .Select(ct => new SelectListModel
+            {
+                Id = (int)ct,
+                Title = GetEnumDisplayName(ct)
+            })
+            .ToList();
+
+        return Response<IEnumerable<SelectListModel>>.Success(contentTypes, 200);
+    }
+
+    /// <summary>
+    /// This method list post category types
+    /// </summary>
+    /// <returns></returns>
+    public Response<IEnumerable<SelectListModel>> GetPostCategoryTypes()
+    {
+        var categoryTypes = Enum.GetValues(typeof(CategoryType))
+            .Cast<CategoryType>()
+            .Select(ct => new SelectListModel
+            {
+                Id = (int)ct,
+                Title = GetEnumDisplayName(ct)
+            })
+            .ToList();
+
+        return Response<IEnumerable<SelectListModel>>.Success(categoryTypes, 200);
+    }
+
+    // Helper methods
+    private string GetEnumDisplayName(Enum value)
+    {
+        var field = value.GetType().GetField(value.ToString());
+        var displayAttribute = (DisplayAttribute)Attribute.GetCustomAttribute(field, typeof(DisplayAttribute));
+
+        return (displayAttribute == null ? value.ToString() : displayAttribute.Name) ?? throw new InvalidOperationException();
     }
 }

@@ -1,11 +1,13 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using MstBlog.Core.Entities;
+using MstBlog.Core.Models.Common;
 using MstBlog.Core.Models.Subscribe;
 using MstBlog.Core.Repositories;
 using MstBlog.Core.Responses;
 using MstBlog.Core.Services;
 using MstBlog.Core.UnitOfWork;
+using MstBlog.Service.Constants;
 
 namespace MstBlog.Service.Services;
 
@@ -38,8 +40,17 @@ public class SubscribeService : ISubscribeService
     /// </summary>
     /// <param name="addSubsribeModel"></param>
     /// <returns></returns>
-    public async Task<Response<AddSubsribeModel>> AddAsync(AddSubsribeModel addSubsribeModel)
+    public async Task<Response<NoDataModel>> AddAsync(AddSubsribeModel addSubsribeModel)
     {
+
+        bool isExistSubscribe = await _subscribeRepository
+            .AnyAsync(s => s.Email == addSubsribeModel.Email);
+
+        if (isExistSubscribe)
+        {
+            return Response<NoDataModel>.Fail(Messages.SUBSCRIBE_EXIST, 400);
+        }
+        
         Subscribe newSubscribe = _mapper.Map<Subscribe>(addSubsribeModel);
         
         await _subscribeRepository.AddAsync(newSubscribe);
@@ -48,6 +59,6 @@ public class SubscribeService : ISubscribeService
 
         AddSubsribeModel newModel = _mapper.Map<AddSubsribeModel>(newSubscribe);
 
-        return Response<AddSubsribeModel>.Success(newModel, 204);
+        return Response<NoDataModel>.Success(200);
     }
 }

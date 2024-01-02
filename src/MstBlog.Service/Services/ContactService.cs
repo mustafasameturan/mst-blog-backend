@@ -49,7 +49,7 @@ public class ContactService : IContactService
     /// <summary>
     /// This method add new contact
     /// </summary>
-    /// <param name="contactAddModel"></param>
+    /// <param name="addContactModel"></param>
     /// <returns></returns>
     public async Task<Response<AddContactModel>> AddAsync(AddContactModel addContactModel)
     {
@@ -63,8 +63,7 @@ public class ContactService : IContactService
 
         string mailSubject = addContactModel.Name + " " + addContactModel.Email;
         
-        _emailService.SendEmail(_senderEmail, _senderEmail, mailSubject, 
-            addContactModel.Message);
-        return Response<AddContactModel>.Success(newModel, 204);
+        _emailService.SendEmail(_senderEmail, _senderEmail, mailSubject, addContactModel.Message);
+        return Response<AddContactModel>.Success(200);
     }
 }

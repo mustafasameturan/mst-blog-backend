@@ -2,14 +2,17 @@ using System.Reflection;
 using Api.Modules;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using MstBlog.Api.Extensions;
 using MstBlog.Api.Middlewares;
 using MstBlog.Core.Domain;
+using MstBlog.Core.Entities;
 using MstBlog.Repository.Contexts;
 using MstBlog.Service.Mapping;
 using MstBlog.Service.Services;
+using MstBlog.Service.Validations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +67,9 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddScoped<IValidator<Contact>, ContactValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<ContactValidator>();
+
 //Identity Implemantation
 builder.Services.AddIdentity();
 
@@ -80,6 +86,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("MyAllowedOrigins");
+
+app.UseMiddleware<ApiKeyAuthorizationMiddleware>();
 
 app.UseHttpsRedirection();
 

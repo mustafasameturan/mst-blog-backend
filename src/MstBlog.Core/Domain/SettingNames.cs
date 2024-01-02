@@ -3,6 +3,7 @@ namespace MstBlog.Core.Domain;
 public static class SettingNames
 {
     public const string ConnectionString = "MstBlogConnectionString";
+    public const string ApiKey = "MstBlogApiKey";
     public const string SmtpServer = "SmtpServer";
     public const string SmtpPort = "SmtpPort";
     public const string SmtpUsername = "SmtpUsername";

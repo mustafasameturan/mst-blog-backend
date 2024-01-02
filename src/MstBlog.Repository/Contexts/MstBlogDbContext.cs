@@ -35,14 +35,14 @@ public class MstBlogDbContext : IdentityDbContext<User, IdentityRole, string>
                 {
                     case EntityState.Added:
                     {
-                        entityReference.CreatedDate=DateTime.Now;
+                        entityReference.CreatedDate=DateTime.UtcNow;
                         break;
                     }
                     case EntityState.Modified:
                     {
                         Entry(entityReference).Property(x => x.CreatedDate).IsModified = false;
 
-                        entityReference.UpdatedDate = DateTime.Now;
+                        entityReference.UpdatedDate = DateTime.UtcNow;
                         break;
                     }
                 }
