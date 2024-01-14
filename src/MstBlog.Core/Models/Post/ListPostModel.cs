@@ -3,6 +3,7 @@ namespace MstBlog.Core.Models.Post;
 public class ListPostModel
 {
     public Guid Id { get; set; }
+    public string  Link { get; set; }
     public string Title { get; set; }
     public double ReadTime { get; set; }
     public string FullName { get; set; }

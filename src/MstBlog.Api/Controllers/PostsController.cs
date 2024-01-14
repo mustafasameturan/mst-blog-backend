@@ -28,10 +28,10 @@ public class PostsController : BaseController
         return CreateActionResult(await _postService.GetTopPostsAsync(count));
     }
 
-    [HttpGet("getPostById/{postId:guid}")]
-    public async Task<IActionResult> GetPostById([FromRoute] Guid postId)
+    [HttpGet("getPostByLink/{link}")]
+    public async Task<IActionResult> GetPostByLink([FromRoute] string link)
     {
-        return CreateActionResult(await _postService.GetPostByIdAsync(postId));
+        return CreateActionResult(await _postService.GetPostByLink(link));
     }
     
     [HttpGet("getAllPostsWithDapper")]
@@ -41,9 +41,15 @@ public class PostsController : BaseController
     }
     
     [HttpPost("addPost")]
-    public async Task<IActionResult> AddProject(AddPostModel addProjectModel)
+    public async Task<IActionResult> AddProject([FromBody]AddPostModel addProjectModel)
     {
         return CreateActionResult(await _postService.AddAsync(addProjectModel));
+    }
+    
+    [HttpPut("updateReadTime")]
+    public async Task<IActionResult> UpdateReadTime([FromBody]UpdateReadTimeModel updateReadTimeModel)
+    {
+        return CreateActionResult(await _postService.UpdateReadTimeByPostLinkAsync(updateReadTimeModel));
     }
     
     [HttpGet("getPostCategoryTypes")]

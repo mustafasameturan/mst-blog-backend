@@ -1,12 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using MstBlog.Core.Domain;
 using MstBlog.Core.Entities;
 using MstBlog.Core.Enums;
 using MstBlog.Core.Models.Common;
 using MstBlog.Core.Models.Filter;
 using MstBlog.Core.Models.Post;
-using MstBlog.Core.Models.Project;
 using MstBlog.Core.Repositories;
 using MstBlog.Core.Responses;
 using MstBlog.Core.Services;
@@ -38,6 +38,7 @@ public class PostService : IPostService
             .GetAll()
             .Include(p => p.User)
             .Include(p => p.PostCategories)
+            .Where(p => p.Status == StatusType.Active)
             .Skip(requestModel.Start)
             .Take(requestModel.Limit)
             .ToListAsync();
@@ -66,6 +67,7 @@ public class PostService : IPostService
             .Queryable()
             .Include(p => p.User)
             .Include(p => p.PostCategories)
+            .Where(p => p.Status == StatusType.Active)
             .OrderByDescending(t => t.CreatedDate)
             .Take(count)
             .ToListAsync();
@@ -95,6 +97,7 @@ public class PostService : IPostService
         {
             Title = addPostModel.Title,
             UserId = addPostModel.UserId,
+            Link = RandomStringHelper.GenerateRandomString(8),
             PostCategories = addPostModel.PostCategories
                 .Select(pca => new PostCategory
                 {
@@ -120,20 +123,39 @@ public class PostService : IPostService
     /// <param name="postId"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<Response<GetPostByIdModel>> GetPostByIdAsync(Guid postId)
+    public async Task<Response<GetPostByLinkModel>> GetPostByLink(string link)
     {
         var postDetail = await _postRepository
             .Queryable()
             .Include(p => p.User)
             .Include(p => p.PostCategories)
             .Include(p => p.PostContents)
-            .Where(p => p.Id.Equals(postId))
+            .Where(p => p.Link.Equals(link))
             .FirstOrDefaultAsync();
 
         if (postDetail is null)
             throw new Exception(Messages.POST_NOT_FOUND);
 
-        return Response<GetPostByIdModel>.Success(_mapper.Map<GetPostByIdModel>(postDetail), 200);
+        return Response<GetPostByLinkModel>.Success(_mapper.Map<GetPostByLinkModel>(postDetail), 200);
+    }
+
+    /// <summary>
+    /// This method update related post read time.
+    /// </summary>
+    /// <param name="updateReadTimeModel"></param>
+    /// <returns></returns>
+    public async Task<Response<int>> UpdateReadTimeByPostLinkAsync(UpdateReadTimeModel updateReadTimeModel)
+    {
+        var post = await _postRepository
+            .Queryable()
+            .FirstOrDefaultAsync(p => p.Link.Equals(updateReadTimeModel.PostLink));
+        
+        ArgumentNullException.ThrowIfNull(post);
+
+        post.ReadTime += updateReadTimeModel.ReadTime;
+        await _unitOfWork.CommitAsync();
+        
+        return Response<int>.Success(post.ReadTime, 200);
     }
 
     /// <summary>
@@ -147,7 +169,7 @@ public class PostService : IPostService
             .Select(ct => new SelectListModel
             {
                 Id = (int)ct,
-                Title = GetEnumDisplayName(ct)
+                Title = EnumHelper.GetDisplayName(ct)
             })
             .ToList();
 
@@ -165,19 +187,10 @@ public class PostService : IPostService
             .Select(ct => new SelectListModel
             {
                 Id = (int)ct,
-                Title = GetEnumDisplayName(ct)
+                Title = EnumHelper.GetDisplayName(ct)
             })
             .ToList();
 
         return Response<IEnumerable<SelectListModel>>.Success(categoryTypes, 200);
-    }
-
-    // Helper methods
-    private string GetEnumDisplayName(Enum value)
-    {
-        var field = value.GetType().GetField(value.ToString());
-        var displayAttribute = (DisplayAttribute)Attribute.GetCustomAttribute(field, typeof(DisplayAttribute));
-
-        return (displayAttribute == null ? value.ToString() : displayAttribute.Name) ?? throw new InvalidOperationException();
     }
 }
