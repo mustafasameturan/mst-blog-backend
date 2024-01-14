@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MstBlog.Repository.Contexts;
 
@@ -11,9 +12,10 @@ using MstBlog.Repository.Contexts;
 namespace MstBlog.Repository.Migrations
 {
     [DbContext(typeof(MstBlogDbContext))]
-    partial class MstBlogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240114141551_post-link")]
+    partial class postlink
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,7 +166,7 @@ namespace MstBlog.Repository.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 21, 4, 339, DateTimeKind.Utc).AddTicks(400));
+                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 15, 51, 57, DateTimeKind.Utc).AddTicks(5560));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -186,7 +188,7 @@ namespace MstBlog.Repository.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 21, 4, 339, DateTimeKind.Utc).AddTicks(570));
+                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 15, 51, 57, DateTimeKind.Utc).AddTicks(5710));
 
                     b.HasKey("Id");
 
@@ -202,10 +204,9 @@ namespace MstBlog.Repository.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 21, 4, 339, DateTimeKind.Utc).AddTicks(1290));
+                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 15, 51, 57, DateTimeKind.Utc).AddTicks(6460));
 
                     b.Property<string>("Link")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ReadTime")
@@ -223,7 +224,7 @@ namespace MstBlog.Repository.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 21, 4, 339, DateTimeKind.Utc).AddTicks(1380));
+                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 15, 51, 57, DateTimeKind.Utc).AddTicks(6540));
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -248,7 +249,7 @@ namespace MstBlog.Repository.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 21, 4, 339, DateTimeKind.Utc).AddTicks(900));
+                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 15, 51, 57, DateTimeKind.Utc).AddTicks(6040));
 
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
@@ -261,7 +262,7 @@ namespace MstBlog.Repository.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 21, 4, 339, DateTimeKind.Utc).AddTicks(990));
+                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 15, 51, 57, DateTimeKind.Utc).AddTicks(6140));
 
                     b.HasKey("Id");
 
@@ -286,7 +287,7 @@ namespace MstBlog.Repository.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 21, 4, 339, DateTimeKind.Utc).AddTicks(1670));
+                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 15, 51, 57, DateTimeKind.Utc).AddTicks(6820));
 
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
@@ -299,7 +300,7 @@ namespace MstBlog.Repository.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 21, 4, 339, DateTimeKind.Utc).AddTicks(1750));
+                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 15, 51, 57, DateTimeKind.Utc).AddTicks(6930));
 
                     b.HasKey("Id");
 
@@ -317,7 +318,7 @@ namespace MstBlog.Repository.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 21, 4, 339, DateTimeKind.Utc).AddTicks(2050));
+                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 15, 51, 57, DateTimeKind.Utc).AddTicks(7200));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -335,7 +336,7 @@ namespace MstBlog.Repository.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 21, 4, 339, DateTimeKind.Utc).AddTicks(2120));
+                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 15, 51, 57, DateTimeKind.Utc).AddTicks(7280));
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -355,7 +356,7 @@ namespace MstBlog.Repository.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 21, 4, 339, DateTimeKind.Utc).AddTicks(2390));
+                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 15, 51, 57, DateTimeKind.Utc).AddTicks(7560));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -369,7 +370,7 @@ namespace MstBlog.Repository.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 21, 4, 339, DateTimeKind.Utc).AddTicks(2480));
+                        .HasDefaultValue(new DateTime(2024, 1, 14, 14, 15, 51, 57, DateTimeKind.Utc).AddTicks(7640));
 
                     b.HasKey("Id");
 

@@ -16,7 +16,9 @@ public interface IPostService
     
     Task<Response<AddPostModel>> AddAsync(AddPostModel addPostModel);
 
-    Task<Response<GetPostByIdModel>> GetPostByIdAsync(Guid postId);
+    Task<Response<GetPostByLinkModel>> GetPostByLink(string link);
+
+    Task<Response<int>> UpdateReadTimeByPostLinkAsync(UpdateReadTimeModel updateReadTimeModel);  
 
     Response<IEnumerable<SelectListModel>> GetPostContentTypes();
 

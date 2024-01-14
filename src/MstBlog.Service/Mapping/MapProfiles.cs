@@ -35,7 +35,7 @@ public class MapProfiles : Profile
             .ForMember(dest => dest.RecordsTotal, opt => opt.MapFrom(src => 1))
             .ForMember(dest => dest.RecordsFiltered, opt => opt.MapFrom(src => 1));
         
-        CreateMap<Post, GetPostByIdModel>()
+        CreateMap<Post, GetPostByLinkModel>()
             .ForMember(dest => dest.UserInformations, opt => opt.MapFrom(src => new GetUserInformationsModel
             {
                 UserId = src.UserId,

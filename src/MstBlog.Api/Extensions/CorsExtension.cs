@@ -16,6 +16,14 @@ public static class CorsExtension
                     policy.WithOrigins("https://mst-blog.vercel.app") 
                         .AllowAnyHeader()
                         .AllowAnyMethod();
+                    
+                    policy.WithOrigins("https://www.mustafasameturan.com.tr") 
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    
+                    policy.WithOrigins("https://mustafasameturan.com.tr") 
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
                 });
         });
     }

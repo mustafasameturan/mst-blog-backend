@@ -10,6 +10,7 @@ public class PostConfiguration : BaseEntityConfiguration<Post, Guid>
     {
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id).HasDefaultValueSql("NEWID()").ValueGeneratedOnAdd();
+        builder.Property(p => p.Link).IsRequired();
         builder.Property(p => p.Title).IsRequired();
         builder.Property(p => p.ReadTime).HasDefaultValue(0);
 
